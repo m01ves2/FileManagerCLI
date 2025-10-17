@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileManagerCLI.Core.Models
+namespace FileManagerCLI.Core.Infrastructure
 {
     //универсальный результат выполнения команды (успех/ошибка, сообщение, данные). Мост между Core и App.
     public class CommandResult

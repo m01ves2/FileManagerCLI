@@ -1,4 +1,5 @@
-﻿using FileManagerCLI.Core.Interfaces;
+﻿using FileManagerCLI.Core.Infrastructure;
+using FileManagerCLI.Core.Interfaces;
 using FileManagerCLI.Core.Models;
 using FileManagerCLI.Core.Services;
 
@@ -9,19 +10,24 @@ namespace FileManagerCLI.Core.Commands
         public string Name => "delete";
         public string Description => "Delete file or directory";
 
-        public CommandResult Execute(IItem item, string[] args)
+        public CommandResult Execute(CommandContext context, string[] args)
         {
             try {
-                if (item is FileItem) {
-                    (new FileService()).DeleteFile(item.Path);
-                }
-                else if (item is DirectoryItem) {
-                    (new DirectoryService()).DeleteDirectory(item.Path);
-                }
-                else
-                    return new CommandResult { Success = false, Message = "Unknown item type" };
+                if (args.Length < 1)
+                    return new CommandResult { Success = false, Message = "Source path required" };
 
-                return new CommandResult { Success = true, Message = $"Deleted {item.Path}" };
+                string source = args[0];
+
+                bool isFile = ((ICommand)this).IsFile(source);
+
+                if (isFile) {
+                    (new FileService()).DeleteFile(source);
+                }
+                else {
+                    (new DirectoryService()).DeleteDirectory(source);
+                }
+
+                return new CommandResult { Success = true, Message = $"Deleted {source}" };
             }
             catch (Exception ex) {
                 return new CommandResult { Success = false, Message = ex.Message };

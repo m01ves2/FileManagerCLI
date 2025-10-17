@@ -1,9 +1,4 @@
-﻿using FileManagerCLI.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FileManagerCLI.Core.Infrastructure;
 
 namespace FileManagerCLI.Core.Interfaces
 {
@@ -11,6 +6,13 @@ namespace FileManagerCLI.Core.Interfaces
     {
         string Name { get; }
         string Description { get; }
-        CommandResult Execute(IItem item, string[] args);
+        CommandResult Execute(CommandContext context, string[] args);
+
+        public bool IsFile(string source)
+        {
+            if (File.Exists(source)) return true;
+            else if (Directory.Exists(source)) return false;
+            else throw new InvalidOperationException("Unknown item type");
+        }
     }
 }

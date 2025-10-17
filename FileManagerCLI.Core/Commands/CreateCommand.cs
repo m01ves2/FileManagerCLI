@@ -1,4 +1,5 @@
-﻿using FileManagerCLI.Core.Interfaces;
+﻿using FileManagerCLI.Core.Infrastructure;
+using FileManagerCLI.Core.Interfaces;
 using FileManagerCLI.Core.Models;
 using FileManagerCLI.Core.Services;
 
@@ -9,17 +10,24 @@ namespace FileManagerCLI.Core.Commands
         public string Name => "create";
         public string Description => "Creates file or directory";
 
-        public CommandResult Execute(IItem item, string[] args)
+        public CommandResult Execute(CommandContext context, string[] args)
         {
             try {
-                if (item is FileItem)
-                    (new FileService()).CreateFile(item.Path);
-                else if (item is DirectoryItem)
-                    (new DirectoryService()).CreateDirectory(item.Path);
-                else
-                    return new CommandResult { Success = false, Message = "Unknown item type" };
+                if (args.Length < 1)
+                    return new CommandResult { Success = false, Message = "Source path required" };
 
-                return new CommandResult { Success = true, Message = $"Created {item.Path}" };
+                string source = args[0];
+
+                bool isFile = ((ICommand)this).IsFile(source);
+
+                if (isFile) {
+                    (new FileService()).CreateFile(source);
+                }
+                else {
+                    (new DirectoryService()).CreateDirectory(source);
+                }
+
+                return new CommandResult { Success = true, Message = $"Created {source}" };
             }
             catch (Exception ex) {
                 return new CommandResult { Success = false, Message = ex.Message };

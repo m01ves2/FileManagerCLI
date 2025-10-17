@@ -1,4 +1,5 @@
-﻿using FileManagerCLI.Core.Interfaces;
+﻿using FileManagerCLI.Core.Infrastructure;
+using FileManagerCLI.Core.Interfaces;
 using FileManagerCLI.Core.Models;
 using FileManagerCLI.Core.Services;
 using System;
@@ -9,20 +10,23 @@ using System.Threading.Tasks;
 
 namespace FileManagerCLI.Core.Commands
 {
-    internal class HelpCommand
+    internal class HelpCommand : ICommand
     {
         public string Name => "help";
         public string Description => "Displays a list of available commands.";
 
-        public void Execute(string[] args)
+        public CommandResult Execute(CommandContext context, string[] args)
         {
-            Console.WriteLine("Available commands:");
-            Console.WriteLine("ls       - List directory contents");
-            Console.WriteLine("cd       - Change directory");
-            Console.WriteLine("cp       - Copy file or directory");
-            Console.WriteLine("rm       - Remove file or directory");
-            Console.WriteLine("help     - Show this help message");
-            Console.WriteLine("exit     - Exit the program");
+            StringBuilder sb = new StringBuilder(); //TODO get command list from App-layer/Register
+            sb.Append("Available commands:");
+            sb.Append("ls       - List directory contents");
+            sb.Append("cd       - Change directory");
+            sb.Append("cp       - Copy file or directory");
+            sb.Append("rm       - Remove file or directory");
+            sb.Append("help     - Show this help message");
+            sb.Append("exit     - Exit the program");
+
+            return new CommandResult() { Success = true, Message = sb.ToString() };
         }
     }
 }

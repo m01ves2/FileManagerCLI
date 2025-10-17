@@ -1,6 +1,8 @@
-﻿using FileManagerCLI.Core.Interfaces;
+﻿using FileManagerCLI.Core.Infrastructure;
+using FileManagerCLI.Core.Interfaces;
 using FileManagerCLI.Core.Models;
 using FileManagerCLI.Core.Services;
+using System.IO.IsolatedStorage;
 
 namespace FileManagerCLI.Core.Commands
 {
@@ -9,20 +11,23 @@ namespace FileManagerCLI.Core.Commands
         public string Name => "copy";
         public string Description => "Copy file or directory";
 
-        public CommandResult Execute(IItem item, string[] args)
+        public CommandResult Execute(CommandContext context, string[] args)
         {
             try {
-                if (args.Length < 1)
-                    return new CommandResult { Success = false, Message = "Destination path required" };
+                if (args.Length < 2)
+                    return new CommandResult { Success = false, Message = "Source and Destination paths required" };
 
-                string destination = args[0];
+                string source = args[0];
+                string destination = args[1];
 
-                if (item is FileItem)
-                    (new FileService()).CopyFile(item.Path, destination);
-                else if (item is DirectoryItem)
-                    (new DirectoryService()).CopyDirectory(item.Path, destination);
-                else
-                    return new CommandResult { Success = false, Message = "Unknown item type" };
+                bool isFile = ((ICommand)this).IsFile(source);
+
+                if ( isFile) {
+                    (new FileService()).CopyFile(source, destination); //TODO: flags, e.g. File.Copy(source, destination, overwrite: true);
+                }
+                else {
+                    (new DirectoryService()).CopyDirectory(source, destination); //TODO flags, e.g. Directory.Copy(source, destination, recoursively);
+                }
 
                 return new CommandResult { Success = true, Message = $"Copied to {destination}" };
             }
