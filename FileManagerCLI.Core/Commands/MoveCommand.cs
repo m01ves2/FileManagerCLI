@@ -5,18 +5,20 @@ using FileManagerCLI.Core.Services;
 
 namespace FileManagerCLI.Core.Commands
 {
-    internal class MoveCommand : ICommand
+    public class MoveCommand : ICommand
     {
         public string Name => "move";
         public string Description => "Move file or directory";
         public CommandResult Execute(CommandContext context, string[] args)
         {
             try {               
-                if (args.Length < 2)
+              
+                if (args.Where(t => !t.StartsWith('-')).Count() < 2)
                     return new CommandResult { Success = false, Message = "Source and Destination paths required" };
 
-                string source = args[0];
-                string destination = args[1];
+                IEnumerable<string> keysCommand = args.Where(t => t.StartsWith('-'));
+                string source = args.Where(t => !t.StartsWith('-')).ElementAt(0);
+                string destination = args.Where(t => !t.StartsWith('-')).ElementAt(1);
 
                 bool isFile = ((ICommand)this).IsFile(source);
 

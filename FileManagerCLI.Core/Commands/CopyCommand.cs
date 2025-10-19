@@ -14,11 +14,14 @@ namespace FileManagerCLI.Core.Commands
         public CommandResult Execute(CommandContext context, string[] args)
         {
             try {
-                if (args.Length < 2)
+                if (args.Where(t => !t.StartsWith('-')).Count() < 2)
                     return new CommandResult { Success = false, Message = "Source and Destination paths required" };
 
-                string source = args[0];
-                string destination = args[1];
+                IEnumerable<string> keysCommand = args.Where(t => t.StartsWith('-'));
+                string source = args.Where(t => !t.StartsWith('-')).ElementAt(0);
+                string destination = args.Where(t => !t.StartsWith('-')).ElementAt(1);
+                
+                //var fullPath = Path.GetFullPath(Path.Combine(context.CurrentDirectory, source));
 
                 bool isFile = ((ICommand)this).IsFile(source);
 

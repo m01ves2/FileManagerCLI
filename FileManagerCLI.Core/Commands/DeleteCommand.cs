@@ -13,10 +13,11 @@ namespace FileManagerCLI.Core.Commands
         public CommandResult Execute(CommandContext context, string[] args)
         {
             try {
-                if (args.Length < 1)
+                if (args.Where(t => !t.StartsWith('-')).Count() < 1)
                     return new CommandResult { Success = false, Message = "Source path required" };
 
-                string source = args[0];
+                string commandKeys = args.Where(t => t.StartsWith('-')).FirstOrDefault() ?? "";
+                string source = args.Where(t => !t.StartsWith('-')).FirstOrDefault() ?? "";
 
                 bool isFile = ((ICommand)this).IsFile(source);
 

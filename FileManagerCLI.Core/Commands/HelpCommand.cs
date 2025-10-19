@@ -1,16 +1,10 @@
 ﻿using FileManagerCLI.Core.Infrastructure;
 using FileManagerCLI.Core.Interfaces;
-using FileManagerCLI.Core.Models;
-using FileManagerCLI.Core.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace FileManagerCLI.Core.Commands
 {
-    internal class HelpCommand : ICommand
+    public class HelpCommand : ICommand
     {
         public string Name => "help";
         public string Description => "Displays a list of available commands.";
