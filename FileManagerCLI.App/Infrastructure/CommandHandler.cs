@@ -7,22 +7,24 @@ namespace FileManagerCLI.App.Infrastructure
 {
     internal class CommandHandler : ICommandHandler
     {
-        private readonly CommandContext _commandContext = new CommandContext();
-        private readonly CommandRegistry _commandRegistry = new CommandRegistry();
-        private readonly CommandFactory _commandFactory;
-        private readonly CommandParser _commandParser = new CommandParser();
-
-        public CommandHandler()
+        CommandContext _commandContext;
+        CommandRegistry _commandRegistry;
+        ICommandFactory _commandFactory;
+        CommandParser _commandParser;
+        public CommandHandler(CommandContext commandContext, CommandRegistry commandRegistry, ICommandFactory commandFactory, CommandParser commandParser)
         {
-            _commandFactory = new CommandFactory(_commandRegistry);
+            _commandContext = commandContext;
+            _commandRegistry = commandRegistry;
+            _commandFactory = commandFactory;
+            _commandParser = commandParser;
         }
 
-        public string Execute(string input) //TODO: return CommandResult + Implement FormatterCLI/FormatterWeb to adopt output for UI
+        public CommandResult Execute(string input) //TODO: return CommandResult + Implement FormatterCLI/FormatterWeb to adopt output for UI
         {
             (string commandName, string[] args) = _commandParser.Parse(input);
             ICommand command = _commandFactory.GetCommand(commandName);
             CommandResult commandResult = command.Execute(_commandContext, args);
-            return commandResult.Message;
+            return commandResult;
         }
 
         public string GetCLIPrompt()

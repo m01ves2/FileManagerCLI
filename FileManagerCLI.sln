@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileManagerCLI.App", "FileM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileManagerCLI.Core", "FileManagerCLI.Core\FileManagerCLI.Core.csproj", "{08BAACF5-0922-4B2D-B931-10F546AF19D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileManagerCLI.Tests", "FileManagerCLI.Tests\FileManagerCLI.Tests.csproj", "{989BC12A-48DC-47F7-97F8-2973C3B3E159}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{08BAACF5-0922-4B2D-B931-10F546AF19D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08BAACF5-0922-4B2D-B931-10F546AF19D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08BAACF5-0922-4B2D-B931-10F546AF19D2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{989BC12A-48DC-47F7-97F8-2973C3B3E159}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{989BC12A-48DC-47F7-97F8-2973C3B3E159}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{989BC12A-48DC-47F7-97F8-2973C3B3E159}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{989BC12A-48DC-47F7-97F8-2973C3B3E159}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

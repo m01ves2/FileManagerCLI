@@ -11,18 +11,23 @@ using System.Threading.Tasks;
 namespace FileManagerCLI.App.Infrastructure
 {
     //вывод текста, ошибок, меню - создаёт команды из текста (связывает App и Core)
-    public class ConsoleUI
+    internal class ConsoleUI
     {
+        private readonly ICommandHandler _commandHandler;
+
+        public ConsoleUI(ICommandHandler commandHandler)
+        {
+            _commandHandler = commandHandler;
+        }
+
         internal void Start()
         {
-            CommandHandler commandHandler = new CommandHandler();
-
             CommandParser parser = new CommandParser();
 
             PrintMenu();
             while (true) {
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write(commandHandler.GetCLIPrompt());
+                Console.Write(_commandHandler.GetCLIPrompt());
                 Console.ResetColor();
 
                 string input = (Console.ReadLine() ?? "").Trim().ToLower();
@@ -38,7 +43,7 @@ namespace FileManagerCLI.App.Infrastructure
                     continue;
                 }
 
-                    string result = commandHandler.Execute(input);
+                    string result = _commandHandler.Execute(input).Message;
 
                 Console.WriteLine(result);
             }

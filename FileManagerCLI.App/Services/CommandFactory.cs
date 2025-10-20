@@ -1,9 +1,9 @@
-﻿using FileManagerCLI.Core.Interfaces;
-using System.Text;
+﻿using FileManagerCLI.App.Interfaces;
+using FileManagerCLI.Core.Interfaces;
 
 namespace FileManagerCLI.App.Services
 {
-    internal class CommandFactory
+    internal class CommandFactory : ICommandFactory
     {
         private CommandRegistry _commandRegistry;
 

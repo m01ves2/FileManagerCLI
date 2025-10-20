@@ -4,6 +4,7 @@ namespace FileManagerCLI.App.Interfaces
 {
     internal interface ICommandHandler
     {
-        string Execute(string input);
+        CommandResult Execute(string input);
+        string GetCLIPrompt();
     }
 }

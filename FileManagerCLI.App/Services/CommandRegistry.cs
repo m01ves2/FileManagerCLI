@@ -1,6 +1,5 @@
 ﻿using FileManagerCLI.Core.Commands;
 using FileManagerCLI.Core.Interfaces;
-using System.Net.Http.Headers;
 using System.Text;
 
 namespace FileManagerCLI.App.Services
