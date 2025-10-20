@@ -1,17 +1,11 @@
 ﻿using FileManagerCLI.App.Interfaces;
-using FileManagerCLI.App.Services;
 using FileManagerCLI.Core.Infrastructure;
-using FileManagerCLI.Core.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace FileManagerCLI.App.Infrastructure
 {
     //вывод текста, ошибок, меню - создаёт команды из текста (связывает App и Core)
-    internal class ConsoleUI
+    internal class ConsoleUI : IUI
     {
         private readonly ICommandHandler _commandHandler;
 
@@ -22,15 +16,13 @@ namespace FileManagerCLI.App.Infrastructure
 
         internal void Start()
         {
-            CommandParser parser = new CommandParser();
-
             PrintMenu();
             while (true) {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.Write(_commandHandler.GetCLIPrompt());
                 Console.ResetColor();
 
-                string input = (Console.ReadLine() ?? "").Trim().ToLower();
+                string input = ReadInput();
 
                 if (string.IsNullOrEmpty(input)) {
                     continue;
@@ -43,26 +35,37 @@ namespace FileManagerCLI.App.Infrastructure
                     continue;
                 }
 
-                    string result = _commandHandler.Execute(input).Message;
-
-                Console.WriteLine(result);
+                CommandResult commandResult = _commandHandler.Execute(input);
+                PrintResult(commandResult);
             }
         }
 
         private void PrintMenu()
         {
-            StringBuilder sb = new StringBuilder(); //TODO get command list from App-layer/Register
-            sb.Append("Available commands:\n");
-            sb.Append("ls       - List directory contents\n");
-            sb.Append("cd       - Change directory\n");
-            sb.Append("cp       - Copy file or directory\n");
-            sb.Append("rm       - Remove file or directory\n");
-            sb.Append("help     - Show this help message\n");
-            sb.Append("exit     - Exit the program\n");
+            StringBuilder sb = new StringBuilder(); //TODO get command list from App-layer/Register->Core-Layer/Commands
+            sb.AppendLine("FileManagerCLI v0.1");
+            sb.AppendLine("Available commands:");
+            sb.AppendLine("ls       - List directory contents");
+            sb.AppendLine("cd       - Change directory");
+            sb.AppendLine("cp       - Copy file or directory");
+            sb.AppendLine("rm       - Remove file or directory");
+            sb.AppendLine("help     - Show this help message");
+            sb.AppendLine("exit     - Exit the program");
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine(sb.ToString());
             Console.ResetColor();
          
+        }
+
+        public void PrintResult(CommandResult commandResult)
+        {
+            Console.WriteLine(commandResult.Message);
+        }
+
+        public string ReadInput()
+        {
+            string input = (Console.ReadLine() ?? "").Trim().ToLower();
+            return input;
         }
     }
 

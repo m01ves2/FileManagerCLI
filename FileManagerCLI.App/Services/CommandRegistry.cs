@@ -22,7 +22,10 @@ namespace FileManagerCLI.App.Services
 
         public ICommand GetCommand(string name)
         {
-            return _registry[name];
+            if (_registry.ContainsKey(name))
+                return _registry[name];
+            else
+                throw new InvalidOperationException("Unsupported command");
         }
 
         public string GetCommandNames()
