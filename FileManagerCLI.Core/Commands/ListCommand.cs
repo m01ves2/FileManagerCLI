@@ -7,11 +7,16 @@ using System.Text;
 namespace FileManagerCLI.Core.Commands
 {
     //команды не являются сущностями, но живут в Core, потому что реализуют бизнес-логику работы с сущностями
-    public class ListCommand : ICommand
+    public class ListCommand : BaseCommand
     {
-        public string Name => "ls";
-        public string Description => "List files and folders in a directory";
-        public CommandResult Execute(CommandContext context, string[] args)
+        public override string Name => "ls";
+        public override string Description => "List files and folders in a directory";
+
+         public ListCommand(IFileService fileService, IDirectoryService directoryService) : base(fileService, directoryService)
+        {
+        }
+
+        public override CommandResult Execute(CommandContext context, string[] args)
         {
             try {
 
@@ -22,10 +27,8 @@ namespace FileManagerCLI.Core.Commands
                 string commandKeys = args.Where(t => t.StartsWith('-')).FirstOrDefault() ?? "";
                 //var path = args.FirstOrDefault() ?? context.CurrentDirectory;
 
-                bool isFile = ((ICommand)this).IsFile(source);
-
-                if (isFile) {
-                    FileInfo fileInfo = (new FileService()).GetFileInfo(source);
+                if (_fileService.IsFile(source)) {
+                    FileInfo fileInfo = _fileService.GetFileInfo(source);
                     return new CommandResult()
                     {
                         Success = true,
@@ -33,7 +36,7 @@ namespace FileManagerCLI.Core.Commands
                     };
                 }
                 else {
-                    string[] items = (new DirectoryService()).ListDirectory(source);
+                    string[] items = _directoryService.ListDirectory(source);
                     StringBuilder sb = new StringBuilder();
                     foreach (string i in items) {
                         sb.Append(i + "\n");

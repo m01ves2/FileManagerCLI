@@ -17,12 +17,12 @@ namespace FileManagerCLI.App.Services
 
             var commands = new List<ICommand>();
 
-            ICommand copyCommand = new CopyCommand();
-            ICommand createCommand = new CreateCommand();
-            ICommand deleteCommand = new DeleteCommand();
-            ICommand helpCommand = new HelpCommand(commands); // HelpCommand получает уже готовую коллекцию
-            ICommand listCommand = new ListCommand();
-            ICommand moveCommand = new MoveCommand();
+            ICommand copyCommand = new CopyCommand(_fileService, _directoryService);
+            ICommand createCommand = new CreateCommand(_fileService, _directoryService);
+            ICommand deleteCommand = new DeleteCommand(_fileService, _directoryService);
+            ICommand helpCommand = new HelpCommand(commands, _fileService, _directoryService); // HelpCommand получает уже готовую коллекцию
+            ICommand listCommand = new ListCommand(_fileService, _directoryService);
+            ICommand moveCommand = new MoveCommand(_fileService, _directoryService);
 
             commands.AddRange(new ICommand[] { 
                 listCommand,

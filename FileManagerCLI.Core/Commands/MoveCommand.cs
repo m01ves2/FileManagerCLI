@@ -5,11 +5,14 @@ using FileManagerCLI.Core.Services;
 
 namespace FileManagerCLI.Core.Commands
 {
-    public class MoveCommand : ICommand
+    public class MoveCommand : BaseCommand
     {
-        public string Name => "mv";
-        public string Description => "Move file or directory";
-        public CommandResult Execute(CommandContext context, string[] args)
+        public override string Name => "mv";
+        public override string Description => "Move file or directory";
+        public MoveCommand(IFileService fileService, IDirectoryService directoryService) : base(fileService, directoryService)
+        {
+        }
+        public override CommandResult Execute(CommandContext context, string[] args)
         {
             try {               
               
@@ -20,13 +23,11 @@ namespace FileManagerCLI.Core.Commands
                 string source = args.Where(t => !t.StartsWith('-')).ElementAt(0);
                 string destination = args.Where(t => !t.StartsWith('-')).ElementAt(1);
 
-                bool isFile = ((ICommand)this).IsFile(source);
-
-                if (isFile) {
-                    (new FileService()).MoveFile(source, destination);
+                if (_fileService.IsFile(source)) {
+                    _fileService.MoveFile(source, destination);
                 }
                 else {
-                    (new DirectoryService()).MoveDirectory(source, destination);
+                    _directoryService.MoveDirectory(source, destination);
                 }
 
                 return new CommandResult { Success = true, Message = $"Moved to {destination}" };

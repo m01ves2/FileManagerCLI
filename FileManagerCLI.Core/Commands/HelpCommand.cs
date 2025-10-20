@@ -1,22 +1,23 @@
 ﻿using FileManagerCLI.Core.Infrastructure;
 using FileManagerCLI.Core.Interfaces;
+using FileManagerCLI.Core.Services;
 using System.Text;
 
 namespace FileManagerCLI.Core.Commands
 {
-    public class HelpCommand : ICommand
+    public class HelpCommand : BaseCommand
     {
-        public string Name => "help";
-        public string Description => "Displays a list of available commands.";
+        public override string Name => "help";
+        public override string Description => "Displays a list of available commands.";
 
         private List<ICommand> _commands;
 
-        public HelpCommand(List<ICommand> commands) 
-        { 
+        public HelpCommand(List<ICommand> commands, IFileService fileService, IDirectoryService directoryService) : base(fileService, directoryService)
+        {
             _commands = commands;
         }
 
-        public CommandResult Execute(CommandContext context, string[] args)
+        public override CommandResult Execute(CommandContext context, string[] args)
         {          
             StringBuilder sb = new StringBuilder();
             sb.Append("--help: \n");

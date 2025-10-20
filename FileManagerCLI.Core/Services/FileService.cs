@@ -18,5 +18,12 @@ namespace FileManagerCLI.Core.Services
         public void MoveFile(string source, string destination) => File.Move(source, destination);
 
         public FileInfo GetFileInfo(string path) => new FileInfo(path);
+
+        public bool IsFile(string source)
+        {
+            if (File.Exists(source)) return true;
+            else if (Directory.Exists(source)) return false;
+            else throw new InvalidOperationException("Unknown item type");
+        }
     }
 }

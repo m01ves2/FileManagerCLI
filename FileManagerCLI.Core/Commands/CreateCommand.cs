@@ -5,12 +5,17 @@ using FileManagerCLI.Core.Services;
 
 namespace FileManagerCLI.Core.Commands
 {
-    public class CreateCommand : ICommand
+    public class CreateCommand : BaseCommand, ICommand
     {
-        public string Name => "mk";
-        public string Description => "Creates file or directory";
 
-        public CommandResult Execute(CommandContext context, string[] args)
+        public override string Name => "mk";
+        public override string Description => "Creates file or directory";
+
+        public CreateCommand(IFileService fileService, IDirectoryService directoryService) : base(fileService, directoryService)
+        {
+        }
+
+        public override CommandResult Execute(CommandContext context, string[] args)
         {
             try {
                 if (args.Where(t => !t.StartsWith('-')).Count() < 1)
@@ -19,13 +24,13 @@ namespace FileManagerCLI.Core.Commands
                 IEnumerable<string> commandKeys = args.Where(t => t.StartsWith('-'));
                 string source = args.Where(t => !t.StartsWith('-')).FirstOrDefault() ?? "";
 
-                bool isFile = !(commandKeys.Contains("-d") || commandKeys.ElementAt(0).Contains('d'));
+                bool isFile = (commandKeys.Count() == 0) || !(commandKeys.Contains("-d") || commandKeys.ElementAt(0).Contains('d'));
 
                 if (isFile) {
-                    (new FileService()).CreateFile(source);
+                    _fileService.CreateFile(source);
                 }
                 else {
-                    (new DirectoryService()).CreateDirectory(source);
+                    _directoryService.CreateDirectory(source);
                 }
 
                 return new CommandResult { Success = true, Message = $"Created {source}" };

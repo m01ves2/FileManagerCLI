@@ -16,6 +16,8 @@ namespace FileManagerCLI.Core.Interfaces
         void CopyFile(string source, string destination);
         void MoveFile(string source, string destination);
 
+        bool IsFile(string source);
+
         //public void MoveFile(FileItem file, string destination)
         //{
         //    File.Move(file.Path, destination);

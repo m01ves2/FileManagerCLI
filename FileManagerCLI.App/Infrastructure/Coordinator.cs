@@ -27,10 +27,6 @@ namespace FileManagerCLI.App.Infrastructure
                 else if (input.Equals("exit")) {
                     break;
                 }
-                //else if (input.Equals("help")) {
-                //    //PrintMenu();
-                //    continue;
-                //}
 
                 CommandResult commandResult = _commandHandler.Execute(input);
                 _uI.PrintResult(commandResult);

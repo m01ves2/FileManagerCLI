@@ -5,12 +5,15 @@ using FileManagerCLI.Core.Services;
 
 namespace FileManagerCLI.Core.Commands
 {
-    public class DeleteCommand : ICommand
+    public class DeleteCommand : BaseCommand
     {
-        public string Name => "rm";
-        public string Description => "Delete file or directory";
+        public override string Name => "rm";
+        public override string Description => "Delete file or directory";
+        public DeleteCommand(IFileService fileService, IDirectoryService directoryService) : base(fileService, directoryService)
+        {
+        }
 
-        public CommandResult Execute(CommandContext context, string[] args)
+        public override CommandResult Execute(CommandContext context, string[] args)
         {
             try {
                 if (args.Where(t => !t.StartsWith('-')).Count() < 1)
@@ -19,13 +22,11 @@ namespace FileManagerCLI.Core.Commands
                 string commandKeys = args.Where(t => t.StartsWith('-')).FirstOrDefault() ?? "";
                 string source = args.Where(t => !t.StartsWith('-')).FirstOrDefault() ?? "";
 
-                bool isFile = ((ICommand)this).IsFile(source);
-
-                if (isFile) {
-                    (new FileService()).DeleteFile(source);
+                if (_fileService.IsFile(source)) {
+                    _fileService.DeleteFile(source);
                 }
                 else {
-                    (new DirectoryService()).DeleteDirectory(source);
+                    _directoryService.DeleteDirectory(source);
                 }
 
                 return new CommandResult { Success = true, Message = $"Deleted {source}" };
