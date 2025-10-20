@@ -15,8 +15,10 @@ namespace FileManagerCLI
             CommandParser commandParser = new CommandParser();
 
             ICommandHandler commandHandler = new CommandHandler(commandContext, commandRegistry, (ICommandFactory)commandFactory, commandParser);
-            ConsoleUI consoleUI = new ConsoleUI(commandHandler);
-            consoleUI.Start();
+            IUI uI = new ConsoleUI();
+
+            Coordinator coordinator = new Coordinator(uI, commandHandler);
+            coordinator.Start();
         }
     }
 }
