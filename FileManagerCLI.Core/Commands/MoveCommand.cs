@@ -7,7 +7,7 @@ namespace FileManagerCLI.Core.Commands
 {
     public class MoveCommand : ICommand
     {
-        public string Name => "move";
+        public string Name => "mv";
         public string Description => "Move file or directory";
         public CommandResult Execute(CommandContext context, string[] args)
         {

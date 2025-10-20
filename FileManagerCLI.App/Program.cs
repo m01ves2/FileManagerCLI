@@ -2,6 +2,8 @@
 using FileManagerCLI.App.Interfaces;
 using FileManagerCLI.App.Services;
 using FileManagerCLI.Core.Infrastructure;
+using FileManagerCLI.Core.Interfaces;
+using FileManagerCLI.Core.Services;
 
 namespace FileManagerCLI
 {
@@ -10,11 +12,13 @@ namespace FileManagerCLI
         private static void Main(string[] args)
         {
             CommandContext commandContext = new CommandContext();
-            CommandRegistry commandRegistry = new CommandRegistry();
+            IFileService fileService = new FileService();
+            IDirectoryService directoryService = new DirectoryService();
+            CommandRegistry commandRegistry = new CommandRegistry(fileService, directoryService);
             ICommandFactory commandFactory = new CommandFactory(commandRegistry);
             CommandParser commandParser = new CommandParser();
 
-            ICommandHandler commandHandler = new CommandHandler(commandContext, commandRegistry, (ICommandFactory)commandFactory, commandParser);
+            ICommandHandler commandHandler = new CommandHandler(commandContext, commandRegistry, commandFactory, commandParser);
             IUI uI = new ConsoleUI();
 
             Coordinator coordinator = new Coordinator(uI, commandHandler);

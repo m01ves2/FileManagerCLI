@@ -9,7 +9,7 @@ namespace FileManagerCLI.Core.Commands
     //команды не являются сущностями, но живут в Core, потому что реализуют бизнес-логику работы с сущностями
     public class ListCommand : ICommand
     {
-        public string Name => "list";
+        public string Name => "ls";
         public string Description => "List files and folders in a directory";
         public CommandResult Execute(CommandContext context, string[] args)
         {

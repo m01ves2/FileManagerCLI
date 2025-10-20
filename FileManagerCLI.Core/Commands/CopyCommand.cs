@@ -8,7 +8,7 @@ namespace FileManagerCLI.Core.Commands
 {
     public class CopyCommand : ICommand
     {
-        public string Name => "copy";
+        public string Name => "cp";
         public string Description => "Copy file or directory";
 
         public CommandResult Execute(CommandContext context, string[] args)

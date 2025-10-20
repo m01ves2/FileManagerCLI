@@ -9,18 +9,20 @@ namespace FileManagerCLI.Core.Commands
         public string Name => "help";
         public string Description => "Displays a list of available commands.";
 
-        public CommandResult Execute(CommandContext context, string[] args)
-        {
-            StringBuilder sb = new StringBuilder(); //TODO get command list from App-layer/Register
-            sb.AppendLine("FileManagerCLI v0.1");
-            sb.AppendLine("Available commands:");
-            sb.AppendLine("ls       - List directory contents");
-            sb.AppendLine("cd       - Change directory");
-            sb.AppendLine("cp       - Copy file or directory");
-            sb.AppendLine("rm       - Remove file or directory");
-            sb.AppendLine("help     - Show this help message");
-            sb.AppendLine("exit     - Exit the program");
+        private List<ICommand> _commands;
 
+        public HelpCommand(List<ICommand> commands) 
+        { 
+            _commands = commands;
+        }
+
+        public CommandResult Execute(CommandContext context, string[] args)
+        {          
+            StringBuilder sb = new StringBuilder();
+            sb.Append("--help: \n");
+            foreach (var item in _commands) {
+                sb.Append(item.Name + " - " + item.Description + "\n");
+            }
             return new CommandResult() { Success = true, Message = sb.ToString() };
         }
     }

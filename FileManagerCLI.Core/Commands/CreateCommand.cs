@@ -7,7 +7,7 @@ namespace FileManagerCLI.Core.Commands
 {
     public class CreateCommand : ICommand
     {
-        public string Name => "create";
+        public string Name => "mk";
         public string Description => "Creates file or directory";
 
         public CommandResult Execute(CommandContext context, string[] args)

@@ -1,5 +1,6 @@
 ﻿using FileManagerCLI.Core.Commands;
 using FileManagerCLI.Core.Interfaces;
+using FileManagerCLI.Core.Services;
 using System.Text;
 
 namespace FileManagerCLI.App.Services
@@ -7,17 +8,33 @@ namespace FileManagerCLI.App.Services
     internal class CommandRegistry
     {
         private readonly Dictionary<string, ICommand> _registry;
-        public CommandRegistry() 
+        private readonly IFileService _fileService;
+        private readonly IDirectoryService _directoryService;
+        public CommandRegistry(IFileService fileService, IDirectoryService directoryService) 
         {
-            _registry = new Dictionary<string, ICommand>()
-            {
-                { "ls", new ListCommand()},
-                { "cp", new CopyCommand()},
-                { "mk", new CreateCommand()},
-                { "rm", new DeleteCommand()},
-                { "help", new HelpCommand()},
-                { "mv", new MoveCommand()},
-            };
+            _fileService = fileService;
+            _directoryService = directoryService;
+
+            var commands = new List<ICommand>();
+
+            ICommand copyCommand = new CopyCommand();
+            ICommand createCommand = new CreateCommand();
+            ICommand deleteCommand = new DeleteCommand();
+            ICommand helpCommand = new HelpCommand(commands); // HelpCommand получает уже готовую коллекцию
+            ICommand listCommand = new ListCommand();
+            ICommand moveCommand = new MoveCommand();
+
+            commands.AddRange(new ICommand[] { 
+                listCommand,
+                copyCommand,
+                createCommand,
+                deleteCommand,
+                moveCommand,
+                helpCommand
+            });
+
+            // а потом — уже реестр
+            _registry = commands.ToDictionary(c => c.Name, c => c);
         }
 
         public ICommand GetCommand(string name)
@@ -26,16 +43,6 @@ namespace FileManagerCLI.App.Services
                 return _registry[name];
             else
                 throw new InvalidOperationException("Unsupported command");
-        }
-
-        public string GetCommandNames()
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("--help: \n");
-            foreach (var item in _registry) {
-                sb.Append(item.Key + " - " + item.Value.Description + "\n");
-            }
-            return sb.ToString();
         }
     }
 }

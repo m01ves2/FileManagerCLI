@@ -7,7 +7,7 @@ namespace FileManagerCLI.Core.Commands
 {
     public class DeleteCommand : ICommand
     {
-        public string Name => "delete";
+        public string Name => "rm";
         public string Description => "Delete file or directory";
 
         public CommandResult Execute(CommandContext context, string[] args)
