@@ -9,20 +9,18 @@ namespace FileManagerCLI.App.Infrastructure
     {
         CommandContext _commandContext;
         CommandRegistry _commandRegistry;
-        ICommandFactory _commandFactory;
         CommandParser _commandParser;
-        public CommandHandler(CommandContext commandContext, CommandRegistry commandRegistry, ICommandFactory commandFactory, CommandParser commandParser)
+        public CommandHandler(CommandContext commandContext, CommandRegistry commandRegistry, CommandParser commandParser)
         {
             _commandContext = commandContext;
             _commandRegistry = commandRegistry;
-            _commandFactory = commandFactory;
             _commandParser = commandParser;
         }
 
         public CommandResult Execute(string input) //TODO: return CommandResult + Implement FormatterCLI/FormatterWeb to adopt output for UI
         {
             (string commandName, string[] args) = _commandParser.Parse(input);
-            ICommand command = _commandFactory.GetCommand(commandName);
+            ICommand command = _commandRegistry.GetCommand(commandName);
             CommandResult commandResult = command.Execute(_commandContext, args);
             return commandResult;
         }

@@ -15,10 +15,9 @@ namespace FileManagerCLI
             IFileService fileService = new FileService();
             IDirectoryService directoryService = new DirectoryService();
             CommandRegistry commandRegistry = new CommandRegistry(fileService, directoryService);
-            ICommandFactory commandFactory = new CommandFactory(commandRegistry);
             CommandParser commandParser = new CommandParser();
 
-            ICommandHandler commandHandler = new CommandHandler(commandContext, commandRegistry, commandFactory, commandParser);
+            ICommandHandler commandHandler = new CommandHandler(commandContext, commandRegistry, commandParser);
             IUI uI = new ConsoleUI();
 
             Coordinator coordinator = new Coordinator(uI, commandHandler);
