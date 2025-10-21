@@ -17,7 +17,7 @@ namespace FileManagerCLI.Core.Commands
             try {               
               
                 if (args.Where(t => !t.StartsWith('-')).Count() < 2)
-                    return new CommandResult { Success = false, Message = "Source and Destination paths required" };
+                    return new CommandResult { Status = CommandStatus.Error, Message = "Source and Destination paths required" };
 
                 IEnumerable<string> keysCommand = args.Where(t => t.StartsWith('-'));
                 string source = args.Where(t => !t.StartsWith('-')).ElementAt(0);
@@ -26,14 +26,17 @@ namespace FileManagerCLI.Core.Commands
                 if (_fileService.IsFile(source)) {
                     _fileService.MoveFile(source, destination);
                 }
-                else {
+                else if (_directoryService.IsDirectory(source)) {
                     _directoryService.MoveDirectory(source, destination);
                 }
+                else {
+                    return new CommandResult { Status = CommandStatus.Error, Message = "No such file or directory" };
+                }
 
-                return new CommandResult { Success = true, Message = $"Moved to {destination}" };
+                    return new CommandResult { Status = CommandStatus.Success, Message = $"Moved to {destination}" };
             }
             catch (Exception ex) {
-                return new CommandResult { Success = false, Message = ex.Message };
+                return new CommandResult { Status = CommandStatus.Error, Message = ex.Message };
             }
         }
     }

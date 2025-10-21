@@ -13,5 +13,6 @@ namespace FileManagerCLI.Core.Interfaces
         void DeleteDirectory(string path);
         void CopyDirectory(string source, string destination);
         void MoveDirectory(string source, string destination);
+        bool IsDirectory(string source);
     }
 }

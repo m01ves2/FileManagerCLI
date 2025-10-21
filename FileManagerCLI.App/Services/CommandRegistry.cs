@@ -23,6 +23,7 @@ namespace FileManagerCLI.App.Services
             ICommand helpCommand = new HelpCommand(commands, _fileService, _directoryService); // HelpCommand получает уже готовую коллекцию
             ICommand listCommand = new ListCommand(_fileService, _directoryService);
             ICommand moveCommand = new MoveCommand(_fileService, _directoryService);
+            ICommand exitCommand = new ExitCommand(_fileService, _directoryService);
 
             commands.AddRange(new ICommand[] { 
                 listCommand,
@@ -30,7 +31,8 @@ namespace FileManagerCLI.App.Services
                 createCommand,
                 deleteCommand,
                 moveCommand,
-                helpCommand
+                helpCommand,
+                exitCommand
             });
 
             // а потом — уже реестр
@@ -42,7 +44,7 @@ namespace FileManagerCLI.App.Services
             if (_registry.ContainsKey(name))
                 return _registry[name];
             else
-                throw new InvalidOperationException("Unsupported command");
+                throw new InvalidOperationException("Unsupported command. try \"help\" to get list of commands");
         }
     }
 }

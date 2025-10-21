@@ -7,9 +7,9 @@ namespace FileManagerCLI.App.Infrastructure
 {
     internal class CommandHandler : ICommandHandler
     {
-        CommandContext _commandContext;
-        CommandRegistry _commandRegistry;
-        CommandParser _commandParser;
+        private readonly CommandContext _commandContext;
+        private readonly CommandRegistry _commandRegistry;
+        private readonly CommandParser _commandParser;
         public CommandHandler(CommandContext commandContext, CommandRegistry commandRegistry, CommandParser commandParser)
         {
             _commandContext = commandContext;
@@ -17,11 +17,12 @@ namespace FileManagerCLI.App.Infrastructure
             _commandParser = commandParser;
         }
 
-        public CommandResult Execute(string input) //TODO: return CommandResult + Implement FormatterCLI/FormatterWeb to adopt output for UI
+        public CommandResult Execute(string input)
         {
+            CommandResult commandResult;
             (string commandName, string[] args) = _commandParser.Parse(input);
             ICommand command = _commandRegistry.GetCommand(commandName);
-            CommandResult commandResult = command.Execute(_commandContext, args);
+            commandResult = command.Execute(_commandContext, args);
             return commandResult;
         }
 

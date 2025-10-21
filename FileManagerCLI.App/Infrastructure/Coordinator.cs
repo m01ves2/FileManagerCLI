@@ -24,12 +24,13 @@ namespace FileManagerCLI.App.Infrastructure
                 if (string.IsNullOrEmpty(input)) {
                     continue;
                 }
-                else if (input.Equals("exit")) {
-                    break;
-                }
 
                 CommandResult commandResult = _commandHandler.Execute(input);
                 _uI.PrintResult(commandResult);
+
+                if(commandResult.Status == CommandStatus.Exit) {
+                    break;
+                }
             }
         }
     }

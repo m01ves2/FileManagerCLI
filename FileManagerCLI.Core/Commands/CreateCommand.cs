@@ -19,7 +19,7 @@ namespace FileManagerCLI.Core.Commands
         {
             try {
                 if (args.Where(t => !t.StartsWith('-')).Count() < 1)
-                    return new CommandResult { Success = false, Message = "Source path required" };
+                    return new CommandResult { Status = CommandStatus.Error, Message = "Source path required" };
 
                 IEnumerable<string> commandKeys = args.Where(t => t.StartsWith('-'));
                 string source = args.Where(t => !t.StartsWith('-')).FirstOrDefault() ?? "";
@@ -33,10 +33,10 @@ namespace FileManagerCLI.Core.Commands
                     _directoryService.CreateDirectory(source);
                 }
 
-                return new CommandResult { Success = true, Message = $"Created {source}" };
+                return new CommandResult { Status = CommandStatus.Success, Message = $"Created {source}" };
             }
             catch (Exception ex) {
-                return new CommandResult { Success = false, Message = ex.Message };
+                return new CommandResult { Status = CommandStatus.Error, Message = ex.Message };
             }
 
         }

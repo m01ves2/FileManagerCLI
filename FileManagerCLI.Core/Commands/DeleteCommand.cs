@@ -17,7 +17,7 @@ namespace FileManagerCLI.Core.Commands
         {
             try {
                 if (args.Where(t => !t.StartsWith('-')).Count() < 1)
-                    return new CommandResult { Success = false, Message = "Source path required" };
+                    return new CommandResult { Status = CommandStatus.Error, Message = "Source path required" };
 
                 string commandKeys = args.Where(t => t.StartsWith('-')).FirstOrDefault() ?? "";
                 string source = args.Where(t => !t.StartsWith('-')).FirstOrDefault() ?? "";
@@ -25,14 +25,17 @@ namespace FileManagerCLI.Core.Commands
                 if (_fileService.IsFile(source)) {
                     _fileService.DeleteFile(source);
                 }
-                else {
+                else if (_directoryService.IsDirectory(source)) {
                     _directoryService.DeleteDirectory(source);
                 }
+                else {
+                    return new CommandResult { Status = CommandStatus.Error, Message = "No such file or directory" };
+                }
 
-                return new CommandResult { Success = true, Message = $"Deleted {source}" };
+                    return new CommandResult { Status = CommandStatus.Success, Message = $"Deleted {source}" };
             }
             catch (Exception ex) {
-                return new CommandResult { Success = false, Message = ex.Message };
+                return new CommandResult { Status = CommandStatus.Error, Message = ex.Message };
             }
         }
     }

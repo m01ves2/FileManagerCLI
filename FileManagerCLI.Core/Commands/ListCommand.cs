@@ -31,22 +31,25 @@ namespace FileManagerCLI.Core.Commands
                     FileInfo fileInfo = _fileService.GetFileInfo(source);
                     return new CommandResult()
                     {
-                        Success = true,
+                        Status = CommandStatus.Success,
                         Message = $"{fileInfo.CreationTime}\t{fileInfo.Attributes}\t{fileInfo.Length}"
                     };
                 }
-                else {
+                else if (_directoryService.IsDirectory(source)) {
                     string[] items = _directoryService.ListDirectory(source);
                     StringBuilder sb = new StringBuilder();
                     foreach (string i in items) {
                         sb.Append(i + "\n");
                     }
-                    return new CommandResult() { Success = true, Message = sb.ToString() };
+                    return new CommandResult() { Status = CommandStatus.Success, Message = sb.ToString() };
+                }
+                else {
+                    return new CommandResult() { Status = CommandStatus.Error, Message = "No such file or directory" };
                 }
 
             }
             catch (Exception ex) {
-                return new CommandResult { Success = false, Message = ex.Message };
+                return new CommandResult { Status = CommandStatus.Error, Message = ex.Message };
             }
         }
     }

@@ -24,7 +24,7 @@ namespace FileManagerCLI.Core.Commands
             foreach (var item in _commands) {
                 sb.Append(item.Name + " - " + item.Description + "\n");
             }
-            return new CommandResult() { Success = true, Message = sb.ToString() };
+            return new CommandResult() { Status = CommandStatus.Success, Message = sb.ToString() };
         }
     }
 }

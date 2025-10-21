@@ -19,7 +19,7 @@ namespace FileManagerCLI.Core.Commands
         {
             try {
                 if (args.Where(t => !t.StartsWith('-')).Count() < 2)
-                    return new CommandResult { Success = false, Message = "Source and Destination paths required" };
+                    return new CommandResult { Status = CommandStatus.Error, Message = "Source and Destination paths required" };
 
                 IEnumerable<string> keysCommand = args.Where(t => t.StartsWith('-'));
                 string source = args.Where(t => !t.StartsWith('-')).ElementAt(0);
@@ -30,14 +30,17 @@ namespace FileManagerCLI.Core.Commands
                 if (_fileService.IsFile(source)) {
                     _fileService.CopyFile(source, destination); //TODO: flags, e.g. File.Copy(source, destination, overwrite: true);
                 }
-                else {
+                else if(_directoryService.IsDirectory(source)) {
                     _directoryService.CopyDirectory(source, destination); //TODO flags, e.g. Directory.Copy(source, destination, recoursively);
                 }
+                else {
+                    return new CommandResult { Status = CommandStatus.Error, Message = "No such file or directory" };
+                }
 
-                return new CommandResult { Success = true, Message = $"Copied to {destination}" };
+                    return new CommandResult { Status = CommandStatus.Success, Message = $"Copied to {destination}" };
             }
             catch (Exception ex) {
-                return new CommandResult { Success = false, Message = ex.Message };
+                return new CommandResult { Status = CommandStatus.Error, Message = ex.Message };
             }
         }
 

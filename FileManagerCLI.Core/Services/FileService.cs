@@ -21,9 +21,7 @@ namespace FileManagerCLI.Core.Services
 
         public bool IsFile(string source)
         {
-            if (File.Exists(source)) return true;
-            else if (Directory.Exists(source)) return false;
-            else throw new InvalidOperationException("Unknown item type");
+            return File.Exists(source);
         }
     }
 }

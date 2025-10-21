@@ -28,5 +28,10 @@ namespace FileManagerCLI.Core.Services
         public string[] ListDirectory(string path) => Directory.GetFileSystemEntries(path);
 
         public void MoveDirectory(string source, string destination) => Directory.Move(source, destination);
+
+        public bool IsDirectory(string source)
+        {
+            return Directory.Exists(source); 
+        }
     }
 }
