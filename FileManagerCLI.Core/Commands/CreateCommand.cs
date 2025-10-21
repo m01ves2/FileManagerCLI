@@ -18,14 +18,12 @@ namespace FileManagerCLI.Core.Commands
         public override CommandResult Execute(CommandContext context, string[] args)
         {
             try {
-                if (args.Where(t => !t.StartsWith('-')).Count() < 1)
+                (IEnumerable<string> commandKeys, string source, string destination) = ParseArgs(args);
+
+                if (source == "")
                     return new CommandResult { Status = CommandStatus.Error, Message = "Source path required" };
 
-                IEnumerable<string> commandKeys = args.Where(t => t.StartsWith('-'));
-                string source = args.Where(t => !t.StartsWith('-')).FirstOrDefault() ?? "";
-
-                bool isFile = (commandKeys.Count() == 0) || !(commandKeys.Contains("-d") || commandKeys.ElementAt(0).Contains('d'));
-
+                bool isFile = (commandKeys.Count() == 0) || !(commandKeys.Contains("-d") || (commandKeys.ElementAtOrDefault(0)?? "").Contains('d'));
                 if (isFile) {
                     _fileService.CreateFile(source);
                 }

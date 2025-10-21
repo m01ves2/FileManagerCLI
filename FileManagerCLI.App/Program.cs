@@ -7,7 +7,7 @@ using FileManagerCLI.Core.Services;
 
 namespace FileManagerCLI
 {
-    internal class Program
+    public class Program
     {
         private static void Main(string[] args)
         {

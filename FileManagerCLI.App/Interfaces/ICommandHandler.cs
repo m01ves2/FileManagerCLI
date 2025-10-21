@@ -2,7 +2,7 @@
 
 namespace FileManagerCLI.App.Interfaces
 {
-    internal interface ICommandHandler
+    public interface ICommandHandler
     {
         CommandResult Execute(string input);
         string GetCLIPrompt();

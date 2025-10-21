@@ -14,14 +14,11 @@ namespace FileManagerCLI.Core.Commands
         }
         public override CommandResult Execute(CommandContext context, string[] args)
         {
-            try {               
-              
-                if (args.Where(t => !t.StartsWith('-')).Count() < 2)
-                    return new CommandResult { Status = CommandStatus.Error, Message = "Source and Destination paths required" };
+            try {
+                (IEnumerable<string> keysCommand, string source, string destination) = ParseArgs(args);
 
-                IEnumerable<string> keysCommand = args.Where(t => t.StartsWith('-'));
-                string source = args.Where(t => !t.StartsWith('-')).ElementAt(0);
-                string destination = args.Where(t => !t.StartsWith('-')).ElementAt(1);
+                if (source == "" || destination == "")
+                    return new CommandResult { Status = CommandStatus.Error, Message = "Source and Destination paths required" };
 
                 if (_fileService.IsFile(source)) {
                     _fileService.MoveFile(source, destination);

@@ -3,7 +3,7 @@ using FileManagerCLI.Core.Infrastructure;
 
 namespace FileManagerCLI.App.Infrastructure
 {
-    internal class Coordinator
+    public class Coordinator
     {
         private readonly ICommandHandler _commandHandler;
         private readonly IUI _uI;
@@ -26,17 +26,11 @@ namespace FileManagerCLI.App.Infrastructure
                     continue;
                 }
 
-
-                try {
-                    commandResult = _commandHandler.Execute(input);
-                }
-                catch (Exception ex) {
-                    commandResult = new CommandResult { Status = CommandStatus.Error, Message = ex.Message };
-                }
+                commandResult = _commandHandler.Execute(input);
 
                 _uI.WriteOutput(commandResult);
 
-                if(commandResult.Status == CommandStatus.Exit) {
+                if (commandResult.Status == CommandStatus.Exit) {
                     break;
                 }
             }

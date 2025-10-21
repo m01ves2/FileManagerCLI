@@ -16,11 +16,10 @@ namespace FileManagerCLI.Core.Commands
         public override CommandResult Execute(CommandContext context, string[] args)
         {
             try {
-                if (args.Where(t => !t.StartsWith('-')).Count() < 1)
-                    return new CommandResult { Status = CommandStatus.Error, Message = "Source path required" };
+                (IEnumerable<string> commandKeys, string source, string destination) = ParseArgs(args);
 
-                string commandKeys = args.Where(t => t.StartsWith('-')).FirstOrDefault() ?? "";
-                string source = args.Where(t => !t.StartsWith('-')).FirstOrDefault() ?? "";
+                if (source == "")
+                    return new CommandResult { Status = CommandStatus.Error, Message = "Source path required" };
 
                 if (_fileService.IsFile(source)) {
                     _fileService.DeleteFile(source);
@@ -32,7 +31,7 @@ namespace FileManagerCLI.Core.Commands
                     return new CommandResult { Status = CommandStatus.Error, Message = "No such file or directory" };
                 }
 
-                    return new CommandResult { Status = CommandStatus.Success, Message = $"Deleted {source}" };
+                return new CommandResult { Status = CommandStatus.Success, Message = $"Deleted {source}" };
             }
             catch (Exception ex) {
                 return new CommandResult { Status = CommandStatus.Error, Message = ex.Message };

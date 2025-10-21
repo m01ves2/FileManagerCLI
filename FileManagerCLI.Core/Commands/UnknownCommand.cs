@@ -12,7 +12,6 @@ namespace FileManagerCLI.Core.Commands
         {
             Name = name;
         }
-
         public override CommandResult Execute(CommandContext context, string[] args)
         {
             return new CommandResult() { Status = CommandStatus.Error, Message = $"Unknown command: {Name}. Try 'help'." };

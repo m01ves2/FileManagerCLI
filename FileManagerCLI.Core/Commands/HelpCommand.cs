@@ -10,9 +10,9 @@ namespace FileManagerCLI.Core.Commands
         public override string Name => "help";
         public override string Description => "Displays a list of available commands.";
 
-        private List<ICommand> _commands;
+        private IReadOnlyList<ICommand> _commands;
 
-        public HelpCommand(List<ICommand> commands, IFileService fileService, IDirectoryService directoryService) : base(fileService, directoryService)
+        public HelpCommand(IReadOnlyList<ICommand> commands, IFileService fileService, IDirectoryService directoryService) : base(fileService, directoryService)
         {
             _commands = commands;
         }

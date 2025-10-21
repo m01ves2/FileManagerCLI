@@ -20,12 +20,9 @@ namespace FileManagerCLI.Core.Commands
         {
             try {
 
-                string source = ".";
-                if (args.Where(t => !t.StartsWith('-')).Count() > 0)
-                    source = args.Where(t => !t.StartsWith("-")).FirstOrDefault() ?? ".";
-
-                string commandKeys = args.Where(t => t.StartsWith('-')).FirstOrDefault() ?? "";
-                //var path = args.FirstOrDefault() ?? context.CurrentDirectory;
+                (IEnumerable<string> commandKeys, string source, string destination) = ParseArgs(args);
+                if (source == "") 
+                    source = ".";
 
                 if (_fileService.IsFile(source)) {
                     FileInfo fileInfo = _fileService.GetFileInfo(source);

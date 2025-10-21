@@ -1,11 +1,12 @@
 ﻿using FileManagerCLI.Core.Commands;
 using FileManagerCLI.Core.Interfaces;
 using FileManagerCLI.Core.Services;
+using Microsoft.Win32;
 using System.Text;
 
 namespace FileManagerCLI.App.Services
 {
-    internal class CommandRegistry
+    public class CommandRegistry
     {
         private readonly Dictionary<string, ICommand> _registry;
         private readonly IFileService _fileService;
@@ -34,6 +35,9 @@ namespace FileManagerCLI.App.Services
                 helpCommand,
                 exitCommand
             });
+
+            if (commands.Select(c => c.Name).Distinct().Count() != commands.Count)
+                throw new InvalidOperationException("Duplicate command names detected.");
 
             // а потом — уже реестр
             _registry = commands.ToDictionary(c => c.Name, c => c);
