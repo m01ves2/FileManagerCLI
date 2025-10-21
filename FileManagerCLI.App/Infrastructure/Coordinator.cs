@@ -20,13 +20,21 @@ namespace FileManagerCLI.App.Infrastructure
             while (true) {
                 string prompt = _commandHandler.GetCLIPrompt();
                 string input = _uI.ReadInput(prompt);
+                CommandResult commandResult;
 
                 if (string.IsNullOrEmpty(input)) {
                     continue;
                 }
 
-                CommandResult commandResult = _commandHandler.Execute(input);
-                _uI.PrintResult(commandResult);
+
+                try {
+                    commandResult = _commandHandler.Execute(input);
+                }
+                catch (Exception ex) {
+                    commandResult = new CommandResult { Status = CommandStatus.Error, Message = ex.Message };
+                }
+
+                _uI.WriteOutput(commandResult);
 
                 if(commandResult.Status == CommandStatus.Exit) {
                     break;

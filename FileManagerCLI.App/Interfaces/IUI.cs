@@ -5,6 +5,6 @@ namespace FileManagerCLI.App.Interfaces
     internal interface IUI
     {
         public string ReadInput(string prompt);
-        public void PrintResult(CommandResult commandResult);
+        public void WriteOutput(CommandResult commandResult);
     }
 }

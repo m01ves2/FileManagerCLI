@@ -44,7 +44,7 @@ namespace FileManagerCLI.App.Services
             if (_registry.ContainsKey(name))
                 return _registry[name];
             else
-                throw new InvalidOperationException("Unsupported command. try \"help\" to get list of commands");
+                return new UnknownCommand(name, _fileService, _directoryService);
         }
     }
 }
