@@ -21,7 +21,6 @@ namespace FileManagerCLI.App.Services
             ICommand copyCommand = new CopyCommand(_fileService, _directoryService);
             ICommand createCommand = new CreateCommand(_fileService, _directoryService);
             ICommand deleteCommand = new DeleteCommand(_fileService, _directoryService);
-            ICommand helpCommand = new HelpCommand(commands, _fileService, _directoryService); // HelpCommand получает уже готовую коллекцию
             ICommand listCommand = new ListCommand(_fileService, _directoryService);
             ICommand moveCommand = new MoveCommand(_fileService, _directoryService);
             ICommand exitCommand = new ExitCommand(_fileService, _directoryService);
@@ -32,9 +31,11 @@ namespace FileManagerCLI.App.Services
                 createCommand,
                 deleteCommand,
                 moveCommand,
-                helpCommand,
                 exitCommand
             });
+
+            ICommand helpCommand = new HelpCommand(commands, _fileService, _directoryService); // HelpCommand получает уже готовую коллекцию
+            commands.Add(helpCommand);
 
             if (commands.Select(c => c.Name).Distinct().Count() != commands.Count)
                 throw new InvalidOperationException("Duplicate command names detected.");

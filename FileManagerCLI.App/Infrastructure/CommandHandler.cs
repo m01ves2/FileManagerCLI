@@ -19,50 +19,42 @@ namespace FileManagerCLI.App.Infrastructure
 
         public CommandResult Execute(string input)
         {
-            CommandResult commandResult;
-
             try {
                 (string commandName, string[] args) = _commandParser.Parse(input);
                 ICommand command = _commandRegistry.GetCommand(commandName);
-                commandResult = command.Execute(_commandContext, args);
+                return command.Execute(_commandContext, args);
             }
-            catch(Exception ex) {
-                commandResult = new CommandResult() { Status = CommandStatus.Error, Message = ex.Message};
+            catch (InvalidOperationException ex) {
+                LogError("Operation", ex);
+                return new CommandResult() { Status = CommandStatus.Error, Message = $"Operation error: {ex.Message}"};
             }
-
-            return commandResult;
+            catch (Exception ex) {
+                LogError("Unexpected", ex);
+                return new CommandResult() { Status = CommandStatus.Error, Message = $"Unexpected error: {ex.Message}"};
+            }
         }
 
         public string GetCLIPrompt()
         {
             return _commandContext.CurrentDirectory + ">";
         }
+
+        private void LogError(string category, Exception ex)
+        {
+            try {
+                string logDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs");
+                Directory.CreateDirectory(logDir); // create directory if it doesn't exist
+                string logFile = Path.Combine(logDir, "errors.txt");
+
+                string logEntry =
+                    $"[{DateTime.Now:yyyy-MM-dd HH:mm:ss}] [{category}] {ex.Message}\n" +
+                    $"{ex.StackTrace}\n\n";
+
+                File.AppendAllText(logFile, logEntry + Environment.NewLine);
+            }
+            catch {
+                // no Exceptions to outside. "Silent logging"
+            }
+        }
     }
 }
-
-//так, смотри:
-//ты писал: "CommandParser.Parse()
-//    Если строка пустая или состоит из пробелов — tokens[0] выбросит IndexOutOfRangeException."
-//но ведь у нас есть защита в Coordinator.Start:
-//if (string.IsNullOrEmpty(input)) {
-//    continue;
-//}
-//так что пустые вводы отсеиваются еще тут
-//1.парсер мы защитили
-//if (string.IsNullOrWhiteSpace(input))
-//    return ("", Array.Empty<string>());
-//теперь там не может вылететь Exception
-//2. GetCommand мы защитили
-// public ICommand GetCommand(string name)
-//{
-//    if (_registry.ContainsKey(name))
-//        return _registry[name];
-//    else
-//        return new UnknownCommand(name, _fileService, _directoryService);
-//}
-//там тоже не может вылететь Exception
-//3. В Core у нас не может вылететь Exception, они там все обрабатываются
-//4. значит, единственное место, которое мы только что добавили, и где вылетают Exception - это конструктор в CommandRegistry:
-//            if (commands.Select(c => c.Name).Distinct().Count() != commands.Count)
-//    throw new InvalidOperationException("Duplicate command names detected.");
-//и получается, мы оборачиваем код внутри CommandResult.Execute только ради этого единственного исключения? не вижу других причин
