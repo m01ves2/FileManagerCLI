@@ -1,7 +1,5 @@
 ﻿using FileManagerCLI.App.Interfaces;
 using FileManagerCLI.Core.Infrastructure;
-using System;
-using System.Text;
 
 namespace FileManagerCLI.App.Infrastructure
 {

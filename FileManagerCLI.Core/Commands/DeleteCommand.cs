@@ -1,7 +1,5 @@
 ﻿using FileManagerCLI.Core.Infrastructure;
 using FileManagerCLI.Core.Interfaces;
-using FileManagerCLI.Core.Models;
-using FileManagerCLI.Core.Services;
 
 namespace FileManagerCLI.Core.Commands
 {

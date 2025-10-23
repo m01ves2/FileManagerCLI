@@ -1,7 +1,4 @@
 ﻿using FileManagerCLI.Core.Interfaces;
-using FileManagerCLI.Core.Services;
-using System.Collections.Generic;
-using System.IO;
 
 namespace FileManagerCLI.Tests.TestUtils
 {

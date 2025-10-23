@@ -1,8 +1,6 @@
-﻿using FileManagerCLI.Core;
-using FileManagerCLI.Core.Commands;
+﻿using FileManagerCLI.Core.Commands;
 using FileManagerCLI.Core.Infrastructure;
 using FileManagerCLI.Tests.TestUtils;
-using Xunit;
 
 namespace FileManagerCLI.Tests.Commands
 {

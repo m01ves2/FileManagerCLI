@@ -1,11 +1,4 @@
-﻿using FileManagerCLI.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FileManagerCLI.Core.Interfaces
+﻿namespace FileManagerCLI.Core.Interfaces
 {
     // IFileService.cs — сервис для работы с файловой системой
     public interface IFileService

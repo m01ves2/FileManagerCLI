@@ -1,7 +1,6 @@
 ﻿using FileManagerCLI.Core.Commands;
 using FileManagerCLI.Core.Infrastructure;
 using FileManagerCLI.Core.Services;
-using System.Text;
 
 namespace FileManagerCLI.Tests.Commands
 {

@@ -1,9 +1,4 @@
 ﻿using FileManagerCLI.Core.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 //реализация работы с файлами и каталогами.
 namespace FileManagerCLI.Core.Services

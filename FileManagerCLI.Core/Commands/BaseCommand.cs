@@ -1,7 +1,5 @@
 ﻿using FileManagerCLI.Core.Infrastructure;
 using FileManagerCLI.Core.Interfaces;
-using FileManagerCLI.Core.Services;
-using System.Security.Cryptography;
 
 namespace FileManagerCLI.Core.Commands
 {

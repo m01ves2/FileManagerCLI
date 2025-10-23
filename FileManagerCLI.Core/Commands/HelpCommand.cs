@@ -1,6 +1,5 @@
 ﻿using FileManagerCLI.Core.Infrastructure;
 using FileManagerCLI.Core.Interfaces;
-using FileManagerCLI.Core.Services;
 using System.Text;
 
 namespace FileManagerCLI.Core.Commands

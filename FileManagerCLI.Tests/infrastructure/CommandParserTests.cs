@@ -1,7 +1,4 @@
 ﻿using FileManagerCLI.App.Infrastructure;
-using FileManagerCLI.Core.Commands;
-using FileManagerCLI.Core.Infrastructure;
-using FileManagerCLI.Core.Services;
 
 namespace FileManagerCLI.Tests.infrastructure
 {

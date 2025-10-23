@@ -1,6 +1,5 @@
 ﻿using FileManagerCLI.App.Interfaces;
 using FileManagerCLI.Core.Infrastructure;
-using System.Collections.Generic;
 
 namespace FileManagerCLI.Tests.TestUtils
 {

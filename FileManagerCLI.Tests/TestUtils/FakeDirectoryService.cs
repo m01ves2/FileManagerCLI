@@ -1,8 +1,4 @@
 ﻿using FileManagerCLI.Core.Interfaces;
-using FileManagerCLI.Core.Services;
-using System.Collections.Generic;
-using System.IO;
-using static System.Net.WebRequestMethods;
 
 namespace FileManagerCLI.Tests.TestUtils
 {
